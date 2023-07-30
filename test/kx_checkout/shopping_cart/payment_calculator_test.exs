@@ -3,6 +3,7 @@
 # ---
 defmodule KxCheckout.ShoppingCart.PaymentCalculatorTest do
   use ExUnit.Case
+  doctest KxCheckout.ShoppingCart.PaymentCalculator
   alias KxCheckout.ShoppingCart.PaymentCalculator
 
   describe "calculate/2" do
