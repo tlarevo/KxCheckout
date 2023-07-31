@@ -23,7 +23,7 @@ defmodule KxCheckout.PaymentCalculator do
     {:ok, 22.45}
 
   """
-
+  alias KxCheckout.Models.{ShoppingCart, ItemGroup}
   alias KxCheckout.Protocols.DiscountRule
   alias KxCheckout.Models.DiscountRules.{BuyXGetY, BuyXGetDiscount}
 
@@ -33,7 +33,7 @@ defmodule KxCheckout.PaymentCalculator do
   @spec calculate(shopping_list(), discount_rules()) :: {:ok, float()}
   def calculate(shopping_list, discount_rules)
       when is_list(shopping_list) and is_map(discount_rules) do
-    %{net_total: net_total} =
+    %ShoppingCart{net_total: net_total} =
       shopping_list
       |> calculate_item_counts()
       |> calculate_item_totals_and_discounts(discount_rules)
@@ -50,18 +50,19 @@ defmodule KxCheckout.PaymentCalculator do
       Map.update(
         acc,
         p_code,
-        %{count: 1, price: price, total: price, discount: 0.00},
-        fn %{
+        %ItemGroup{count: 1, price: price, total: price, discount: 0.00},
+        fn %ItemGroup{
              count: count
-           } = item_details ->
-          %{item_details | count: count + 1}
+           } = item_group ->
+          %{item_group | count: count + 1}
         end
       )
     end)
   end
 
   defp calculate_item_totals_and_discounts(item_map, discount_rules) do
-    Enum.reduce(item_map, item_map, fn {p_code, %{count: count, price: price} = item_details},
+    Enum.reduce(item_map, item_map, fn {p_code,
+                                        %ItemGroup{count: count, price: price} = item_group},
                                        acc ->
       # Calculate the disount by first fetching the applicable discount rule for the product code
       # and then passing it to calculating the applicable discount for the given rule
@@ -77,7 +78,7 @@ defmodule KxCheckout.PaymentCalculator do
       # Use short hand map update syntax to update both item map and item details map
       # Choise was made to use short-hand syntax keep the code clean and reduce use of
       # intermediate variables
-      %{acc | p_code => %{item_details | discount: discount, total: total}}
+      %{acc | p_code => %{item_group | discount: discount, total: total}}
     end)
   end
 
@@ -86,7 +87,7 @@ defmodule KxCheckout.PaymentCalculator do
     # item totals and discounts in to 2 separate figures
     {gross_total, total_discount} =
       item_map
-      |> Enum.reduce({0.00, 0.00}, fn {_k, %{total: total, discount: discount}},
+      |> Enum.reduce({0.00, 0.00}, fn {_k, %ItemGroup{total: total, discount: discount}},
                                       {gross_total, total_discount} ->
         {gross_total + total, total_discount + discount}
       end)
@@ -97,7 +98,7 @@ defmodule KxCheckout.PaymentCalculator do
     # Build the final map using item details, gross total, total discount and
     # net total also used Float's round function to get around the floating point arithmetic issues
     # Refer https://hexdocs.pm/elixir/1.15.4/Float.html#module-known-issues for details
-    %{
+    %ShoppingCart{
       item_details: item_map,
       gross_total: gross_total |> Float.round(2),
       total_discount: total_discount |> Float.round(2),
