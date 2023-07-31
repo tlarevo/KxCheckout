@@ -29,6 +29,7 @@ defmodule KxCheckout.PaymentCalculator do
 
   @type shopping_list :: [{atom(), float()}]
   @type discount_rules :: %{atom() => BuyXGetY.t() | BuyXGetDiscount.t()}
+  @type item_group_map :: %{atom() => ItemGroup.t()}
 
   @spec calculate(shopping_list(), discount_rules()) :: {:ok, float()}
   def calculate(shopping_list, discount_rules)
@@ -42,6 +43,7 @@ defmodule KxCheckout.PaymentCalculator do
     {:ok, net_total}
   end
 
+  @spec calculate_item_counts(shopping_list()) :: item_group_map()
   defp calculate_item_counts(shopping_list) do
     # By reducing the shopping list, create item details map
     # Use Maps update function to populate and update the count simaltaniously
@@ -60,6 +62,8 @@ defmodule KxCheckout.PaymentCalculator do
     end)
   end
 
+  @spec calculate_item_totals_and_discounts(item_group_map(), discount_rules()) ::
+          item_group_map()
   defp calculate_item_totals_and_discounts(item_map, discount_rules) do
     Enum.reduce(item_map, item_map, fn {p_code,
                                         %ItemGroup{count: count, price: price} = item_group},
@@ -82,6 +86,7 @@ defmodule KxCheckout.PaymentCalculator do
     end)
   end
 
+  @spec calculate_net_total(item_group_map()) :: ShoppingCart.t()
   defp calculate_net_total(item_map) do
     # Calculate both gross total(total cost) and total discount by reducing
     # item totals and discounts in to 2 separate figures
