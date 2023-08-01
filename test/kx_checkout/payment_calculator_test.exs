@@ -8,12 +8,6 @@ defmodule KxCheckout.PaymentCalculatorTest do
   alias KxCheckout.Models.DiscountRules.{BuyXGetY, BuyXGetDiscount}
 
   setup_all do
-    # discounts = %{
-    #   :GR1 => %{type: :buy_x_get_one, threshold: 1},
-    #   :SR1 => %{type: :price_discount, threshold: 3, price: 0.50},
-    #   :CF1 => %{type: :fraction_discount, threshold: 3, fraction: 1 / 3}
-    # }
-
     discounts = %{
       :GR1 => %BuyXGetY{x: 1, y: 1},
       :SR1 => %BuyXGetDiscount{x: 3, type: :price, value: 0.50, apply_to: :all},

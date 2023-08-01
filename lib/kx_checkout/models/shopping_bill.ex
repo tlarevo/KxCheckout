@@ -1,4 +1,4 @@
-defmodule KxCheckout.Models.ShoppingCart do
+defmodule KxCheckout.Models.ShoppingBill do
   defstruct item_details: %{}, gross_total: 0.00, total_discount: 0.00, net_total: 0.00
   alias KxCheckout.Models.ItemGroup
 
