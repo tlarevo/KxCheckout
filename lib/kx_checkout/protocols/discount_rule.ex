@@ -1,7 +1,9 @@
+# Protocol for Discount Rules to be used in polymorphic requirements
 defprotocol KxCheckout.Protocols.DiscountRule do
   def calculate_discount(rule, values)
 end
 
+# Implementation for Any
 defimpl KxCheckout.Protocols.DiscountRule, for: Any do
   def calculate_discount(_, _), do: 0.00
 end

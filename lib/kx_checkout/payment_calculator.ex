@@ -41,8 +41,6 @@ defmodule KxCheckout.PaymentCalculator do
       |> calculate_item_counts()
       |> calculate_item_totals_and_discounts(discount_rules)
       |> calculate_net_total()
-
-    # {:ok, net_total}
   end
 
   @spec calculate_item_counts(shopping_list()) :: item_group_map()

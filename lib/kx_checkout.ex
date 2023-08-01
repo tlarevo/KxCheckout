@@ -45,6 +45,9 @@ defmodule KxCheckout do
     PaymentCalculator.calculate(items_with_price, discount_rules)
   end
 
+  @doc """
+  Get net total(total after all discounts deducted from gross total) from ShoppingBill
+  """
   @spec get_net_total(ShoppingBill.t()) :: float()
   def get_net_total(%ShoppingBill{net_total: net_total}), do: net_total
 
