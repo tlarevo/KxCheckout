@@ -25,22 +25,22 @@ defmodule KxCheckoutTest do
   describe "prepare_bill/2" do
     test "success: given shopping list GR1,SR1,GR1,GR1,CF1 total bill is 22.45", %{repo: repo} do
       shopping_list = [:GR1, :SR1, :GR1, :GR1, :CF1]
-      assert 22.45 == KxCheckout.prepare_bill(shopping_list, repo)
+      assert 22.45 == KxCheckout.prepare_bill(shopping_list, repo) |> KxCheckout.get_net_total()
     end
 
     test "success: given shopping list GR1, GR1 total bill is 3.11", %{repo: repo} do
       shopping_list = [:GR1, :GR1]
-      assert 3.11 == KxCheckout.prepare_bill(shopping_list, repo)
+      assert 3.11 == KxCheckout.prepare_bill(shopping_list, repo) |> KxCheckout.get_net_total()
     end
 
     test "success: given shopping list SR1,SR1,GR1,SR1 total bill is 16.61", %{repo: repo} do
       shopping_list = [:SR1, :SR1, :GR1, :SR1]
-      assert 16.61 == KxCheckout.prepare_bill(shopping_list, repo)
+      assert 16.61 == KxCheckout.prepare_bill(shopping_list, repo) |> KxCheckout.get_net_total()
     end
 
     test "success: given shopping list GR1,CF1,SR1,CF1,CF1 total bill is 30.57", %{repo: repo} do
       shopping_list = [:GR1, :CF1, :SR1, :CF1, :CF1]
-      assert 30.57 == KxCheckout.prepare_bill(shopping_list, repo)
+      assert 30.57 == KxCheckout.prepare_bill(shopping_list, repo) |> KxCheckout.get_net_total()
     end
   end
 end
