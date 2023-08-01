@@ -1,4 +1,4 @@
-defmodule KxCheckout.Inventory do
+defmodule KxCheckout.FakeInventoryRepo do
   use Agent
   alias KxCheckout.Behaviours.Repo
   @behaviour Repo

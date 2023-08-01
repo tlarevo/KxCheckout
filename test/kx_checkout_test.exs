@@ -3,7 +3,7 @@ defmodule KxCheckoutTest do
   doctest KxCheckout
   alias KxCheckout.Models.Product
   alias KxCheckout.Models.DiscountRules.{BuyXGetY, BuyXGetDiscount}
-  alias KxCheckout.Inventory
+  alias KxCheckout.FakeInventoryRepo
 
   setup_all do
     products = %{
@@ -18,8 +18,8 @@ defmodule KxCheckoutTest do
       :CF1 => %BuyXGetDiscount{x: 3, type: :fraction, value: 1 / 3, apply_to: :all}
     }
 
-    Inventory.start_link(%{products: products, discount_rules: discounts})
-    %{repo: Inventory}
+    FakeInventoryRepo.start_link(%{products: products, discount_rules: discounts})
+    %{repo: FakeInventoryRepo}
   end
 
   describe "prepare_bill/2" do

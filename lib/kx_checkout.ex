@@ -29,9 +29,9 @@ defmodule KxCheckout do
     ...>   :SR1 => %BuyXGetDiscount{x: 3, type: :price, value: 0.50, apply_to: :all},
     ...>   :CF1 => %BuyXGetDiscount{x: 3, type: :fraction, value: 1 / 3, apply_to: :all}
     ...> }
-    iex> alias KxCheckout.Inventory
-    iex> Inventory.start_link(%{products: products, discount_rules: discounts})
-    iex> shopping_bill = KxCheckout.prepare_bill([:GR1, :SR1, :GR1, :GR1, :CF1], Inventory)
+    iex> alias KxCheckout.FakeInventoryRepo
+    iex> FakeInventoryRepo.start_link(%{products: products, discount_rules: discounts})
+    iex> shopping_bill = KxCheckout.prepare_bill([:GR1, :SR1, :GR1, :GR1, :CF1], FakeInventoryRepo)
     iex> KxCheckout.get_net_total(shopping_bill)
     22.45
 
