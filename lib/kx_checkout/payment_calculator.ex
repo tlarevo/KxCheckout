@@ -26,23 +26,23 @@ defmodule KxCheckout.PaymentCalculator do
   ## Examples
 
     iex> alias KxCheckout.PaymentCalculator
+    iex> alias KxCheckout.Models.ShoppingBill
     iex> shopping_list = [{:GR1, 3.11}, {:SR1, 5.00}, {:CF1, 11.23}, {:GR1, 3.11}]
     iex> promotions = %{}
-    iex> PaymentCalculator.calculate(shopping_list, promotions)
-    {:ok, 22.45}
+    iex> %ShoppingBill{net_total: 22.45} = PaymentCalculator.calculate(shopping_list, promotions)
 
   """
 
-  @spec calculate(shopping_list(), discount_rules()) :: {:ok, float()}
+  @spec calculate(shopping_list(), discount_rules()) :: ShoppingBill.t()
   def calculate(shopping_list, discount_rules)
       when is_list(shopping_list) and is_map(discount_rules) do
-    %ShoppingBill{net_total: net_total} =
+    %ShoppingBill{} =
       shopping_list
       |> calculate_item_counts()
       |> calculate_item_totals_and_discounts(discount_rules)
       |> calculate_net_total()
 
-    {:ok, net_total}
+    # {:ok, net_total}
   end
 
   @spec calculate_item_counts(shopping_list()) :: item_group_map()
