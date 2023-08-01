@@ -4,9 +4,9 @@ KxCheckout is a supermarket checkout system implemented following TDD and using 
 
 ## Setup
 
-### Optional Erlang & Elixir Installation
+### Optional
 
-Erlang and Elixir need to be installed, install them by
+Erlang and Elixir need to be installed, install them using `brew` or `asdf`
 
 ```bash
 # Using brew
@@ -28,12 +28,14 @@ asdf global elixir latest
 ### Clone & Test
 
 ```bash
- # To run and test;
- # first clone the project
- git clone https://github.com/tlarevo/KxCheckout.git
+# first clone the project
+git clone https://github.com/tlarevo/KxCheckout.git
 
- # then run mix test
- mix test
+# update the deps
+mix deps.get
+
+# then run mix test
+mix test
 
 ```
 
